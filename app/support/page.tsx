@@ -36,6 +36,9 @@ export default function SupportPage() {
       <h3>My "printed" documents: where do they go?</h3>
       <p>Printing inside an exhibit saves an image (or a text file) to your device, the same way a download would. Look in your Downloads or Files app.</p>
 
+      <h3>Refunds</h3>
+      <p>The mobile apps are sold through the Apple App Store and Google Play, so refunds go through the store you bought from: Apple's "Report a Problem" page for the App Store, or the order history in the Google Play app. If you are having trouble, email us and we will point you to the right place.</p>
+
       <h3>Something is not working</h3>
       <p>Try reloading the page or restarting the app first. If the problem continues, email us with the exhibit name and your device model and we will look into it.</p>
 
