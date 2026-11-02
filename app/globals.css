@@ -342,3 +342,20 @@ button { font: inherit; color: inherit; }
 .req-btns button { border: 2px solid #fff; background: #ff8800; color: #000; font-family: var(--mono); padding: 3px 16px; cursor: pointer; }
 .guru { position: absolute; left: 0; right: 0; top: 0; padding: 16px; background: #000; color: #ff2a2a; text-align: center; font-weight: bold; line-height: 1.8; z-index: 9500; border: 6px solid #ff2a2a; animation: guru 1s steps(1) infinite; cursor: pointer; }
 @keyframes guru { 50% { border-color: #000; } }
+
+/* ---------- Privacy / Terms / Support pages ---------- */
+.info-page { max-width: 760px; }
+.info-head { display: flex; align-items: flex-start; gap: 14px; margin: 22px 0 6px; }
+.info-title { font-family: var(--serif); font-size: 34px; font-weight: 400; margin: 2px 0 4px; line-height: 1.1; }
+.info-updated { color: var(--muted); font-size: 13px; }
+.info-body { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 6px; font-size: 16px; line-height: 1.65; }
+.info-body h2 { font-family: var(--serif); font-weight: 400; font-size: 22px; margin: 28px 0 6px; color: var(--brass-2); }
+.info-body h3 { font-size: 16px; font-weight: 600; margin: 20px 0 4px; }
+.info-body p { margin: 0 0 12px; }
+.info-body ul { margin: 0 0 12px; padding-left: 22px; }
+.info-body li { margin-bottom: 6px; }
+.info-body a { color: var(--brass-2); text-decoration: underline; text-underline-offset: 3px; }
+.info-lede { font-family: var(--serif); font-size: 19px; line-height: 1.5; color: var(--paper); }
+.hall-links { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-bottom: 10px; }
+.hall-links a { color: var(--brass-2); font-size: 13px; letter-spacing: .04em; text-transform: uppercase; }
+.hall-links a:hover { text-decoration: underline; text-underline-offset: 3px; }
