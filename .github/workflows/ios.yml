@@ -1,0 +1,23 @@
+name: Build iOS app
+on:
+  push:
+    branches: [main]
+    paths: ["ios/**", "app/**", "components/**", "lib/**", "public/**", "package*.json", "capacitor.config.json", ".github/workflows/ios.yml"]
+  workflow_dispatch:
+permissions: { contents: read }
+jobs:
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      # The app serves the site from its own bundle, so no GitHub Pages base path here.
+      - run: npm run build:static
+      - run: npx cap sync ios
+      - name: Compile the iOS app (no signing) to confirm it builds
+        run: |
+          xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Release \
+            -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO build | tail -25
