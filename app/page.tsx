@@ -77,7 +77,8 @@ export default function Home() {
       </section>
 
       <footer className="hall-footer">
-        <span>Original artwork and software. Machine names are used descriptively; Silicon Hall is not affiliated with any manufacturer.</span>
+        <p>All artwork and software in Silicon Hall are original. Machine and product names are used only to identify the computers each exhibit recreates.</p>
+        <p>Silicon Hall is not affiliated with, sponsored by or endorsed by Apple, Commodore, Atari, IBM, Lenovo or Microsoft. Macintosh, iMac, iBook, PowerBook, Commodore, Amiga, Atari, IBM, ThinkPad, Windows and all other product names are trademarks of their respective owners.</p>
       </footer>
     </main>
   );

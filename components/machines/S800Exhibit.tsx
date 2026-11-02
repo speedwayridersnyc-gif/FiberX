@@ -19,7 +19,7 @@ const BG = "#1b5aa0", FG = "#a6d3ff";
 const seen = new Set<string>();
 
 const S800: ConsoleMachine = {
-  id: "silicon-800", title: "Silicon 800", subtitle: "8-bit home computer & game console · 1979", year: "1979 · 8-bit, cartridge slot", catalog: S800_SECRETS,
+  id: "silicon-800", title: "Atari 800", subtitle: "Atari 8-bit home computer · 1979", year: "1979 · 8-bit, cartridge slot", catalog: S800_SECRETS,
   screen: { cols: 40, rows: 24, fontSize: 12, lineHeight: 11, bx: 32, by: 28, colors: { fg: FG, bg: BG, border: "#0a0a0a" }, upper: true, cursor: "block", glow: "#6aa8ff", font: "s800" },
   crt: { material: "wood", variant: "tv", label: "SILICON COLOR TV" },
   keyboard: "s800", body: "s800",

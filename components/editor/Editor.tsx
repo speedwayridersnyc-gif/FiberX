@@ -7,13 +7,13 @@ import { cssFont, exportText, printDocument } from "@/lib/print";
 export type EdTheme = "classic" | "win" | "notepad" | "s500" | "c64" | "s800" | "dos";
 const B = 1, I = 2, U = 4;
 const CFG: Record<EdTheme, { styled: boolean; names: "dos" | "doc" | "c64" | "free"; paper: "tractor" | "laser"; text: boolean; app: string; machine: string }> = {
-  classic: { styled: true, names: "free", paper: "tractor", text: false, app: "SiliconWrite", machine: "Silicon Classic" },
-  win: { styled: true, names: "doc", paper: "laser", text: false, app: "WritePad", machine: "Silicon 95" },
-  notepad: { styled: false, names: "dos", paper: "laser", text: false, app: "Notepad", machine: "Silicon 95" },
-  s500: { styled: false, names: "free", paper: "tractor", text: false, app: "Ed", machine: "Silicon 500" },
-  c64: { styled: false, names: "c64", paper: "tractor", text: true, app: "SILICON WRITER 64", machine: "Silicon 64" },
-  s800: { styled: false, names: "c64", paper: "tractor", text: true, app: "SILICON WRITER 800", machine: "Silicon 800" },
-  dos: { styled: false, names: "dos", paper: "tractor", text: true, app: "EDIT", machine: "Silicon PC" },
+  classic: { styled: true, names: "free", paper: "tractor", text: false, app: "SiliconWrite", machine: "Macintosh" },
+  win: { styled: true, names: "doc", paper: "laser", text: false, app: "WritePad", machine: "Windows 95" },
+  notepad: { styled: false, names: "dos", paper: "laser", text: false, app: "Notepad", machine: "Windows 95" },
+  s500: { styled: false, names: "free", paper: "tractor", text: false, app: "Ed", machine: "Amiga 500" },
+  c64: { styled: false, names: "c64", paper: "tractor", text: true, app: "SILICON WRITER 64", machine: "Commodore 64" },
+  s800: { styled: false, names: "c64", paper: "tractor", text: true, app: "SILICON WRITER 800", machine: "Atari 800" },
+  dos: { styled: false, names: "dos", paper: "tractor", text: true, app: "EDIT", machine: "IBM PC" },
 };
 const FONTS = [["serif", "Serif"], ["sans", "Sans"], ["mono", "Mono"], ["script", "Script"]];
 let clipboard: { text: string; styles: number[] } = { text: "", styles: [] };

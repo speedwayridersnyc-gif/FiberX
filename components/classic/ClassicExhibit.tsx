@@ -227,7 +227,7 @@ function ClassicInner() {
   return (
     <>
       <KeyBridge enabled={power === "on"} />
-      <ExhibitShell aspect={1.2} title="Silicon Classic" subtitle="128K-style compact · 1984" year="1984 · compact all-in-one" theme="classic" machine={machine} controls={controls}
+      <ExhibitShell aspect={1.2} title="Macintosh" subtitle="Apple 128K compact · 1984" year="1984 · compact all-in-one" theme="classic" machine={machine} controls={controls}
         keyboard={<div className="classic-kb-wrap"><PhysicalKeyboard layout="classic" onPress={() => { if (++typed.current >= 100) unlock("typist"); }} /></div>} />
     </>
   );

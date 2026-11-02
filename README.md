@@ -1,8 +1,8 @@
 # Silicon Hall — A Museum of Retro Computers (prototype)
 
-Next.js 15 (App Router) + React 19 + TypeScript. No external services, no ads, original art only.
+Next.js 15 (App Router) + React 19 + TypeScript. No external services, no ads, original art and software only. Machine names are used descriptively; see the disclaimer in the site footer.
 
-- `/` museum shelf (10 machines; Macintosh + Amiga 500 playable)
+- `/` museum shelf (11 machines named after the real computers they recreate; six playable). Exhibit ids stay `silicon-*`; `LEGACY_SLUGS` keeps old links working.
 - `/machine/macintosh` 1-bit compact Mac: Finder-like desktop, Terminal, Paint, Minefield, floppy, Palace Escape
 - `/machine/amiga-500` Benchtop (Workbench-style) desktop, Shell, Checker Ball demo, Pixel Parade paint, Brickwork, boot-ROM disk prompt
 - `/play/palace-escape` standalone cinematic platformer (colour or 1-bit)

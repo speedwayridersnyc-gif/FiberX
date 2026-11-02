@@ -277,7 +277,7 @@ function Inner() {
   return (
     <>
       <KeyBridge enabled={power} />
-      <ExhibitShell aspect={1.45} title="Silicon 95" subtitle="32-bit desktop · 1995" year="1995 · 90s-class tower" theme="silicon-95" machine={machine} controls={controls} keyboard={keyboard} wide />
+      <ExhibitShell aspect={1.45} title="Windows 95" subtitle="Microsoft 32-bit desktop · 1995" year="1995 · 90s-class tower" theme="silicon-95" machine={machine} controls={controls} keyboard={keyboard} wide />
     </>
   );
 }

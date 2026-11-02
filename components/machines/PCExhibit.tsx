@@ -6,7 +6,7 @@ import { BRICK_CGA } from "../s500/Brickwork";
 import type { GameId } from "../games/GameHost";
 
 const PC: ConsoleMachine = {
-  id: "silicon-pc", title: "Silicon PC", subtitle: "The business computer · 1981", year: "1981 · 16-bit, PC-compatible", catalog: PC_SECRETS,
+  id: "silicon-pc", title: "IBM PC", subtitle: "IBM 5150 · 1981", year: "1981 · 16-bit, PC-compatible", catalog: PC_SECRETS,
   screen: { cols: 80, rows: 25, fontSize: 11, lineHeight: 15, bx: 18, by: 14, colors: { fg: "#c8c8c8", bg: "#000000", border: "#000000" }, upper: false, cursor: "underscore", glow: "#bcd6ff", font: "dos" },
   crt: { material: "beige", variant: "monitor", label: "SILICON COLOR DISPLAY" },
   keyboard: "modelm", body: "pc",

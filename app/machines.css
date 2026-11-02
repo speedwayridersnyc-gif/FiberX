@@ -6,7 +6,7 @@
 .exhibit-page[data-layout="dual"] .half-machine .exhibit-bar { position: relative; padding: 5px 10px; gap: 8px; border-bottom: 0; background: rgba(15,21,34,.6); }
 .exhibit-page[data-layout="dual"] .exhibit-bar-title { font-size: 14px; }
 .exhibit-page[data-layout="dual"] .exhibit-bar .btn { padding: 4px 10px; font-size: 12px; }
-.exhibit-page[data-layout="dual"] .back-link { font-size: 12px; }
+.exhibit-page[data-layout="dual"] .back-link { font-size: 12px; padding: 4px 10px 4px 8px; }
 .machine-fit { flex: 1; min-height: 0; width: 100%; display: flex; justify-content: center; align-items: flex-end; container-type: size; }
 .exhibit-page[data-layout="dual"] .pedestal { max-width: none; width: min(100%, calc(var(--rig-aspect) * (100cqh - 30px))); padding-top: 6px; height: 100%; justify-content: flex-end; }
 .exhibit-page[data-layout="dual"] .pedestal-stage { flex: 0 1 auto; }
@@ -39,7 +39,7 @@
 .theme-s500 .tabletop-kb, .theme-silicon-64 .tabletop-kb { --kb-aspect: 2.5; }
 .theme-silicon-800 .tabletop-kb { --kb-aspect: 1.75; }
 
-/* ---------- Silicon Classic (CRT built-in) ---------- */
+/* ---------- Macintosh (CRT built-in) ---------- */
 .classic-stage { width: min(100%, 520px); margin: 0 auto; }
 .exhibit-page[data-layout="dual"] .classic-stage { width: 100%; }
 .classic-chin-inner { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 4% 2% 7%; }
@@ -97,7 +97,7 @@
 .s800-kb-panel { padding: 1.4%; border-radius: 6px; background: linear-gradient(180deg, #5c3a1f, #3c2511); box-shadow: inset 0 3px 8px rgba(0,0,0,.6); }
 .s800-kb-panel .pkb { max-width: none; }
 
-/* Silicon PC: monitor on system unit */
+/* IBM PC: monitor on system unit */
 .rig-pc { flex-direction: column; align-items: center; gap: 0; }
 .pc-monitor { width: 64%; flex: none; position: relative; z-index: 2; margin-bottom: -2px; }
 .pc-monitor .crt-neck, .pc-monitor .crt-foot { display: none; }

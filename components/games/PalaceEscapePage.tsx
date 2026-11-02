@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import { BackToHall } from "@/components/BackToHall";
 import { useState } from "react";
 import { PalaceEscape, PEEvent } from "./PalaceEscape";
 import { KeyBridge } from "../KeyBridge";
@@ -23,7 +23,7 @@ function Inner() {
     <main className="pe-page">
       <KeyBridge />
       <header className="exhibit-bar">
-        <Link href="/" className="back-link">← Hall</Link>
+        <BackToHall />
         <div className="exhibit-bar-title">Palace Escape <span className="muted">· software annex</span></div>
         <button className="btn btn-ghost" onClick={() => setMono((m) => !m)}>{mono ? "Colour" : "1-bit"}</button>
       </header>
@@ -31,7 +31,7 @@ function Inner() {
         <div className="pe-frame"><PalaceEscape mono={mono} active onEvent={onEvent} className="pe-big" /></div>
         <TouchPad />
       </div>
-      <p className="pe-help">Keyboard: ← → run · ↑ jump (while running: running jump; facing a ledge: climb) · ↓ hang from an edge / drop · Shift careful walk (safe over spikes) · Space / X sword · ↑ in a duel parries. Escape three levels before the hourglass empties. Secrets found here count toward the Silicon Classic exhibit.</p>
+      <p className="pe-help">Keyboard: ← → run · ↑ jump (while running: running jump; facing a ledge: climb) · ↓ hang from an edge / drop · Shift careful walk (safe over spikes) · Space / X sword · ↑ in a duel parries. Escape three levels before the hourglass empties. Secrets found here count toward the Macintosh exhibit.</p>
     </main>
   );
 }

@@ -17,7 +17,7 @@ const DISK: { name: string; type: string; blocks: number; game?: GameId | "write
 ];
 
 const C64: ConsoleMachine = {
-  id: "silicon-64", title: "Silicon 64", subtitle: "8-bit breadbox · 1982", year: "1982 · 8-bit home computer", catalog: C64_SECRETS,
+  id: "silicon-64", title: "Commodore 64", subtitle: "Commodore 8-bit breadbox · 1982", year: "1982 · 8-bit home computer", catalog: C64_SECRETS,
   screen: { cols: 40, rows: 25, fontSize: 12, lineHeight: 11, bx: 40, by: 24, colors: { fg: PAL[14], bg: PAL[6], border: PAL[14] }, upper: true, cursor: "block", glow: "#7869c4", font: "c64" },
   crt: { material: "breadbox", variant: "monitor", label: "SILICON COLOR MONITOR" },
   keyboard: "c64", body: "c64",

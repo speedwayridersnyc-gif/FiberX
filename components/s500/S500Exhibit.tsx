@@ -226,7 +226,7 @@ function S500Inner() {
   return (
     <>
       <KeyBridge enabled={phase !== "off"} />
-      <ExhibitShell aspect={1.24} title="Silicon 500" subtitle="16-bit wedge · 1987" year="1987 · 16-bit home computer" theme="s500" machine={machine} controls={controls} keyboard={wedge} wide />
+      <ExhibitShell aspect={1.24} title="Amiga 500" subtitle="Commodore 16-bit wedge · 1987" year="1987 · 16-bit home computer" theme="s500" machine={machine} controls={controls} keyboard={wedge} wide />
     </>
   );
 }

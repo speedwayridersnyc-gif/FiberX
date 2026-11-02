@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { BackToHall } from "@/components/BackToHall";
 import { notFound } from "next/navigation";
 import { MACHINES, getMachine, LEGACY_SLUGS } from "@/lib/machines";
 import { LegacyRedirect } from "@/components/legacy/LegacyRedirect";
@@ -26,7 +26,7 @@ export default async function MachinePage({ params }: { params: Promise<{ id: st
   if (m.id === "silicon-95") return <W95Exhibit />;
   return (
     <main className="hall soon-page">
-      <Link href="/" className="back-link">← Back to the hall</Link>
+      <BackToHall />
       <div className="soon-card">
         <div className="exhibit-stage big"><MachineArt m={m} /></div>
         <div className="plaque-year">{m.year} · {m.maker}</div>

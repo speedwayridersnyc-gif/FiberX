@@ -1,7 +1,7 @@
 "use client";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useSecrets } from "@/lib/secrets/SecretsProvider";
+import { BackToHall } from "./BackToHall";
 import { SecretsPanel } from "./SecretsPanel";
 import { Pedestal } from "./hw/Pedestal";
 import { DeviceKeyboard } from "./hw/DeviceKeyboard";
@@ -43,7 +43,7 @@ export function ExhibitShell({ title, subtitle, machine, controls, theme, keyboa
   const toggle = () => { const v = layout === "dual" ? "single" : "dual"; setLayout(v); localStorage.setItem(KEY, v); };
   const bar = (
     <header className="exhibit-bar">
-      <Link href="/" className="back-link">← Hall</Link>
+      <BackToHall />
       <div className="exhibit-bar-title">{title} <span className="muted">· {subtitle}</span></div>
       <div className="exhibit-bar-actions">
         <DeviceKeyboard />
