@@ -1,0 +1,26 @@
+import { makeCatalog, s } from "./shared";
+export const C64_SECRETS = makeCatalog("silicon-64", [
+  s("c64-boot", "READY.", "Switch on the breadbox.", "System"),
+  s("c64-write-save", "Writer", "Save a document in Silicon Writer 64.", "Writer"),
+  s("c64-write-print", "Printer On Device 4", "Print from Silicon Writer 64.", "Writer"),
+  s("c64-hello", "Hello, World", "PRINT a friendly greeting.", "BASIC"),
+  s("c64-maze", "Ten Print", "Write the famous one-line maze program and RUN it.", "BASIC"),
+  s("c64-program", "Programmer", "Type in a BASIC program of three or more lines and RUN it.", "BASIC"),
+  s("c64-break", "RUN/STOP", "Interrupt a running program.", "BASIC"),
+  s("c64-poke", "Border Patrol", "POKE a new colour into the border.", "BASIC"),
+  s("c64-reset", "Cold Start", "Ask the machine to SYS itself back to the start.", "BASIC"),
+  s("c64-nodisk", "Device Not Present", "Try to LOAD with no disk in the drive.", "Floppy"),
+  s("c64-dir", "What's On The Disk?", "LOAD the directory and LIST it.", "Floppy"),
+  s("c64-load", "LOAD\"*\",8,1", "Load the first program from the disk the classic way.", "Floppy"),
+  s("snake-10", "Long Snake", "Eat ten pellets in Snake.", "Snake"),
+  s("snake-crash", "Ouroboros", "Crash in Snake.", "Snake"),
+], [
+  s("c64-sid", "SID Sings", "Make the sound chip play a note with POKE.", "BASIC"),
+  s("c64-sprite", "Sprite Wrangler", "Put a sprite on screen.", "BASIC"),
+  s("c64-petscii", "PETSCII Painter", "Draw a picture with graphic characters.", "BASIC"),
+  s("c64-tape", "Press Play On Tape", "Try to load from cassette.", "Floppy"),
+  s("c64-fastload", "Turbo", "Use the fast loader cartridge.", "Floppy"),
+  s("c64-snake-50", "Anaconda", "Eat fifty pellets in Snake.", "Snake"),
+  s("c64-lowercase", "Lower Case", "Switch the character set to lowercase.", "System"),
+  s("c64-restore", "RUN/STOP + RESTORE", "Use the emergency key combo.", "System"),
+]);

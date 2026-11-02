@@ -1,0 +1,25 @@
+import { makeCatalog, s } from "./shared";
+export const S800_SECRETS = makeCatalog("silicon-800", [
+  s("s800-boot", "Power On", "Switch on the console.", "System"),
+  s("s800-write-save", "Writer", "Save a document with the WRITER cartridge.", "Writer"),
+  s("s800-write-print", "Hard Copy", "Print from the WRITER cartridge.", "Writer"),
+  s("s800-memo", "Memo Pad", "Power on with no cartridge in the slot.", "System"),
+  s("s800-basic", "READY", "Boot the BASIC cartridge.", "BASIC"),
+  s("s800-hello", "Hello, World", "PRINT a friendly greeting.", "BASIC"),
+  s("s800-setcolor", "SETCOLOR", "Change the screen colour with SETCOLOR.", "BASIC"),
+  s("s800-maze", "Diagonal Maze", "Fill the screen with a random maze of slashes.", "BASIC"),
+  s("s800-program", "Programmer", "RUN a program of three or more lines.", "BASIC"),
+  s("s800-break", "BREAK Key", "Stop a running program.", "BASIC"),
+  s("s800-dos", "No DOS Here", "Ask BASIC for DOS with no disk drive attached.", "BASIC"),
+  s("s800-hotswap", "Hot Swap", "Pull a cartridge while the power is on. (Don't do this on real hardware!)", "Cartridges"),
+  s("s800-carts", "Collector", "Boot all six cartridges.", "Cartridges"),
+  s("snake-10", "Long Snake", "Eat ten pellets in Snake.", "Snake"),
+  s("snake-crash", "Ouroboros", "Crash in Snake.", "Snake"),
+], [
+  s("s800-player-missile", "Player/Missile", "Draw a player-missile sprite.", "BASIC"),
+  s("s800-sound", "Four Voices", "Use SOUND to play a chord.", "BASIC"),
+  s("s800-graphics8", "GRAPHICS 8", "Enter the high-resolution mode.", "BASIC"),
+  s("s800-attract", "Attract Mode", "Leave the machine idle until colours cycle.", "System"),
+  s("s800-joystick", "Joystick Port", "Read the joystick with STICK(0).", "BASIC"),
+  s("s800-inverse", "Inverse Video", "Type in inverse video.", "System"),
+]);

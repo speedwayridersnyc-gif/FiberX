@@ -1,0 +1,26 @@
+{
+  "name": "retro-museum",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "lint": "next lint",
+    "build:static": "STATIC_EXPORT=1 next build && rm -rf out && cp -r .next-export out"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.6.10",
+    "@capacitor/core": "^7.6.10",
+    "next": "15.5.4",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.6.10",
+    "@types/node": "22.7.4",
+    "@types/react": "19.1.13",
+    "@types/react-dom": "19.1.9",
+    "typescript": "5.6.2"
+  }
+}
