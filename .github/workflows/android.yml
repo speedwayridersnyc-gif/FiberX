@@ -1,0 +1,42 @@
+name: Build Android app
+on:
+  workflow_dispatch:
+    inputs:
+      version_code:
+        description: "versionCode (must increase for every Play upload)"
+        required: true
+        default: "1"
+      version_name:
+        description: "versionName shown to users"
+        required: true
+        default: "1.0.0"
+permissions: { contents: read }
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 21 }
+      - run: npm ci
+      # The app serves the site from its own bundle, so no GitHub Pages base path here.
+      - run: npm run build:static
+      - run: npx cap sync android
+      - name: Build release bundle (unsigned; signed offline before upload) and a debug APK for sideload testing
+        working-directory: android
+        env:
+          ANDROID_VERSION_CODE: ${{ inputs.version_code }}
+          ANDROID_VERSION_NAME: ${{ inputs.version_name }}
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon bundleRelease assembleDebug
+          ls -la app/build/outputs/bundle/release app/build/outputs/apk/debug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: silicon-hall-android-${{ inputs.version_name }}-${{ inputs.version_code }}
+          path: |
+            android/app/build/outputs/bundle/release/app-release.aab
+            android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error

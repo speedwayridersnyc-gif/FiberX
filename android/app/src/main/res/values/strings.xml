@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Silicon Hall</string>
+    <string name="title_activity_main">Silicon Hall</string>
+    <string name="package_name">com.siliconhall.museum</string>
+    <string name="custom_url_scheme">com.siliconhall.museum</string>
+</resources>
