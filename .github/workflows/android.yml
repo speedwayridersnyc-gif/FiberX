@@ -13,7 +13,7 @@ on:
         description: "versionName shown to users"
         required: true
         default: "1.0.0"
-permissions: { contents: read }
+permissions: { contents: write }
 jobs:
   android:
     runs-on: ubuntu-latest
@@ -37,6 +37,19 @@ jobs:
           chmod +x gradlew
           ./gradlew --no-daemon bundleRelease assembleDebug
           ls -la app/build/outputs/bundle/release app/build/outputs/apk/debug
+      - name: Publish the build files to the builds branch
+        env:
+          VN: ${{ inputs.version_name || '1.0.0' }}
+          VC: ${{ inputs.version_code || '1' }}
+        run: |
+          set -e
+          rm -rf /tmp/pub && mkdir -p /tmp/pub
+          cp android/app/build/outputs/bundle/release/app-release.aab "/tmp/pub/silicon-hall-$VN-$VC-unsigned.aab"
+          cp android/app/build/outputs/apk/debug/app-debug.apk "/tmp/pub/silicon-hall-$VN-$VC-debug.apk"
+          cd /tmp/pub && git init -q -b builds
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" add -A
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -q -m "Android build $VN ($VC) from $GITHUB_SHA"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/$GITHUB_REPOSITORY.git" builds
       - uses: actions/upload-artifact@v4
         with:
           name: silicon-hall-android-${{ inputs.version_name || '1.0.0' }}-${{ inputs.version_code || '1' }}
