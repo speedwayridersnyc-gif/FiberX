@@ -1,5 +1,8 @@
 name: Build Android app
 on:
+  push:
+    branches: [main]
+    paths: ["android/**", "app/**", "components/**", "lib/**", "public/**", "package*.json", ".github/workflows/android.yml"]
   workflow_dispatch:
     inputs:
       version_code:
@@ -27,15 +30,16 @@ jobs:
       - name: Build release bundle (unsigned; signed offline before upload) and a debug APK for sideload testing
         working-directory: android
         env:
-          ANDROID_VERSION_CODE: ${{ inputs.version_code }}
-          ANDROID_VERSION_NAME: ${{ inputs.version_name }}
+          # Manual runs set these; pushes use the defaults below. Bump before each Play upload.
+          ANDROID_VERSION_CODE: ${{ inputs.version_code || '1' }}
+          ANDROID_VERSION_NAME: ${{ inputs.version_name || '1.0.0' }}
         run: |
           chmod +x gradlew
           ./gradlew --no-daemon bundleRelease assembleDebug
           ls -la app/build/outputs/bundle/release app/build/outputs/apk/debug
       - uses: actions/upload-artifact@v4
         with:
-          name: silicon-hall-android-${{ inputs.version_name }}-${{ inputs.version_code }}
+          name: silicon-hall-android-${{ inputs.version_name || '1.0.0' }}-${{ inputs.version_code || '1' }}
           path: |
             android/app/build/outputs/bundle/release/app-release.aab
             android/app/build/outputs/apk/debug/app-debug.apk
