@@ -1,0 +1,22 @@
+node_modules
+.next
+out
+.next-export
+tsconfig.tsbuildinfo
+
+# Android / Capacitor build outputs
+android/.gradle/
+android/build/
+android/app/build/
+android/app/release/
+android/captures/
+android/.idea/
+android/local.properties
+android/app/src/main/assets/public
+android/app/src/main/assets/capacitor.config.json
+android/app/src/main/assets/capacitor.plugins.json
+*.apk
+*.aab
+*.ap_
+*.keystore
+!debug.keystore

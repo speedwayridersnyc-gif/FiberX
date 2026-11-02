@@ -1,0 +1,13 @@
+{
+  "appId": "com.siliconhall.museum",
+  "appName": "Silicon Hall",
+  "webDir": "out",
+  "android": {
+    "backgroundColor": "#0f1522",
+    "allowMixedContent": false,
+    "adjustMarginsForEdgeToEdge": "auto"
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}
