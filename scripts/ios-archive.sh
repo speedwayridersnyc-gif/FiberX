@@ -8,7 +8,8 @@ exec > >(tee -a "$HOME/ios-build.log") 2>&1
 set -e
 echo "=== $(date) start ($1)"
 cd "$HOME"
-if [ -d silicon-hall/.git ]; then git -C silicon-hall pull -q; else git clone -q https://github.com/speedwayridersnyc-gif/FiberX.git silicon-hall; fi
+rm -rf silicon-hall
+git clone -q -b main https://github.com/speedwayridersnyc-gif/FiberX.git silicon-hall
 cd silicon-hall
 git log -1 --format='code: %h %s'
 npm ci --no-audit --no-fund --loglevel=error
