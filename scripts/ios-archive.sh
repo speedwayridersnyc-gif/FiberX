@@ -28,7 +28,7 @@ if [ -z "$TEAM" ]; then echo "No Apple signing team found. Sign in to Xcode > Se
 # App Store Connect API key (optional): lets xcodebuild manage signing and upload without an Xcode sign-in.
 #   sh ios-archive.sh upload <issuer-id>   with the key file AuthKey_<KEYID>.p8 in ~/Downloads
 AUTH=()
-KEYFILE=$(ls "$HOME"/Downloads/AuthKey_*.p8 2>/dev/null | head -1)
+KEYFILE=$(ls "$HOME"/Downloads/AuthKey_*.p8 2>/dev/null | head -1 || true)
 if [ -n "$KEYFILE" ] && [ -n "$2" ]; then
   KEYID=$(basename "$KEYFILE" .p8); KEYID=${KEYID#AuthKey_}
   AUTH=(-authenticationKeyPath "$KEYFILE" -authenticationKeyID "$KEYID" -authenticationKeyIssuerID "$2")
