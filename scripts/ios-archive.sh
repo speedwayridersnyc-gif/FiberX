@@ -38,26 +38,26 @@ fi
 OUT="$HOME/silicon-hall-build"
 rm -rf "$OUT" && mkdir -p "$OUT"
 cd ios/App
+# Archive unsigned; signing happens at export, where Xcode creates the App Store profile itself.
 xcodebuild -workspace App.xcworkspace -scheme App -configuration Release \
   -destination 'generic/platform=iOS' -archivePath "$OUT/App.xcarchive" \
-  -allowProvisioningUpdates "${AUTH[@]}" DEVELOPMENT_TEAM="$TEAM" CODE_SIGN_STYLE=Automatic \
-  CODE_SIGN_IDENTITY="Apple Distribution" archive | tail -30
+  DEVELOPMENT_TEAM="$TEAM" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" archive | tail -15
 echo "archive ok: $OUT/App.xcarchive"
 
-if [ "$1" = "upload" ]; then
-  cat > "$OUT/ExportOptions.plist" <<PLIST
+DEST=export
+[ "$1" = "upload" ] && DEST=upload
+cat > "$OUT/ExportOptions.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0"><dict>
 <key>method</key><string>app-store-connect</string>
-<key>destination</key><string>upload</string>
+<key>destination</key><string>$DEST</string>
 <key>teamID</key><string>$TEAM</string>
 <key>signingStyle</key><string>automatic</string>
 <key>uploadSymbols</key><true/>
 </dict></plist>
 PLIST
-  xcodebuild -exportArchive -archivePath "$OUT/App.xcarchive" -exportOptionsPlist "$OUT/ExportOptions.plist" \
-    -exportPath "$OUT/export" -allowProvisioningUpdates "${AUTH[@]}" | tail -30
-  echo "upload finished"
-fi
-echo "=== done"
+xcodebuild -exportArchive -archivePath "$OUT/App.xcarchive" -exportOptionsPlist "$OUT/ExportOptions.plist" \
+  -exportPath "$OUT/export" -allowProvisioningUpdates "${AUTH[@]}" | tail -30
+ls -la "$OUT/export" 2>/dev/null || true
+echo "=== done ($DEST)"
