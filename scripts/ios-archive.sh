@@ -7,6 +7,14 @@ export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
 exec > >(tee -a "$HOME/ios-build.log") 2>&1
 set -e -o pipefail
 echo "=== $(date) start ($1)"
+if [ "$1" = "send" ]; then
+  # Upload the archive from the last run without rebuilding.
+  OUT="$HOME/silicon-hall-build"
+  sed -i '' 's|<string>export</string>|<string>upload</string>|' "$OUT/ExportOptions.plist"
+  xcodebuild -exportArchive -archivePath "$OUT/App.xcarchive" -exportOptionsPlist "$OUT/ExportOptions.plist" \
+    -exportPath "$OUT/export" -allowProvisioningUpdates | tail -30
+  echo "=== done (send)"; exit 0
+fi
 cd "$HOME"
 rm -rf silicon-hall
 git clone -q -b main https://github.com/speedwayridersnyc-gif/FiberX.git silicon-hall
