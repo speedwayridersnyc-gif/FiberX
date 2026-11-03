@@ -7,6 +7,17 @@ export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
 exec > >(tee -a "$HOME/ios-build.log") 2>&1
 set -e -o pipefail
 echo "=== $(date) start ($1)"
+if [ "$1" = "organizer" ]; then
+  # Mark the last archive with the team so Xcode's Organizer can distribute it (Xcode re-signs on upload).
+  OUT="$HOME/silicon-hall-build"
+  TEAM=$(security find-identity -v -p codesigning | grep 'Apple Distribution' | head -1 | sed -E 's/.*\(([A-Z0-9]+)\)".*/\1/')
+  /usr/libexec/PlistBuddy -c "Add :ApplicationProperties:Team string $TEAM" "$OUT/App.xcarchive/Info.plist" 2>/dev/null \
+    || /usr/libexec/PlistBuddy -c "Set :ApplicationProperties:Team $TEAM" "$OUT/App.xcarchive/Info.plist"
+  /usr/libexec/PlistBuddy -c "Add :ApplicationProperties:SigningIdentity string Apple Distribution: Phillip Morales ($TEAM)" "$OUT/App.xcarchive/Info.plist" 2>/dev/null || true
+  /usr/libexec/PlistBuddy -c "Print :ApplicationProperties" "$OUT/App.xcarchive/Info.plist"
+  open "$OUT/App.xcarchive"
+  echo "=== done (organizer)"; exit 0
+fi
 if [ "$1" = "send" ]; then
   # Upload the archive from the last run without rebuilding.
   OUT="$HOME/silicon-hall-build"
