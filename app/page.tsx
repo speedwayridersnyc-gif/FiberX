@@ -74,6 +74,12 @@ export default function Home() {
           <p>An original two-paddle tennis game with blip sounds: take on the CPU at three difficulties, or play a friend. On a dual-screen phone, each player drags on their own screen.</p>
           <Link className="btn btn-brass" href="/play/paddle">Play Paddle</Link>
         </div>
+        <div className="annex-card">
+          <div className="annex-kicker">Software annex · on every machine</div>
+          <h2>Lunar Siege</h2>
+          <p>An original fixed shooter: waves of invaders march down toward the moonbase. Slide the cannon, fire from behind three crumbling shields, and hold the line as each wave gets faster.</p>
+          <Link className="btn btn-brass" href="/play/lunar-siege">Play Lunar Siege</Link>
+        </div>
       </section>
 
       <footer className="hall-footer">

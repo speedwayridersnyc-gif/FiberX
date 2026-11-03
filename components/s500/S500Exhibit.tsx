@@ -219,7 +219,7 @@ function S500Inner() {
         </div>
       </div>
       {phase === "off" && <p className="hint">Power on, then insert the Benchtop disk when the ROM asks for it. Double-click (or double-tap) icons to open them.</p>}
-      {focusApp === "paddle" ? <PaddleStrip /> : (focusApp === "jungle" || focusApp === "palace") ? <TouchPad /> : phase !== "off" && <Trackpad label="Mouse pad" buttons={2} />}
+      {focusApp === "paddle" ? <PaddleStrip /> : (focusApp === "jungle" || focusApp === "palace") ? <TouchPad game={focusApp} /> : phase !== "off" && <Trackpad label="Mouse pad" buttons={2} />}
     </div>
   );
 

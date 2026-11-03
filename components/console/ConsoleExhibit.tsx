@@ -180,7 +180,7 @@ function Inner({ m }: { m: ConsoleMachine }) {
         {game && <button className="btn btn-ghost small" onClick={() => { const g = game; setGame(null); handler.current?.onGameExit?.(g); }}>Exit {GAME_TITLES[game]} (Esc)</button>}
         {con.busy && !game && <button className="btn btn-ghost small" onClick={() => { con.api.stop(true); handler.current?.brk?.(); }}>Break (Esc)</button>}
       </div>
-      {game === "paddle" ? <PaddleStrip /> : game && <TouchPad />}
+      {game === "paddle" ? <PaddleStrip /> : game && <TouchPad game={game} />}
       <div className="media-shelf">
         <span className="media-shelf-label">{m.media.kind === "cart" ? "Cartridges" : "Floppy disks"}</span>
         {m.media.options.map((o) => (

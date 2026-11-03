@@ -17,7 +17,7 @@ const PC: ConsoleMachine = {
     const { api, unlock } = env;
     const dos = createDos(api, {
       prefix: "pc", unlock, hasFloppy: () => !!env.media(), disk: "silicon-pc", edit: (f) => env.write(f),
-      launch: (p) => { if (p === "bricks" || p === "jungle" || p === "palace" || p === "snake" || p === "paddle") env.launch(p as GameId); else { api.print("This program requires Silicon 95."); dos.resume(); } },
+      launch: (p) => { if (p === "bricks" || p === "jungle" || p === "palace" || p === "snake" || p === "paddle" || p === "siege") env.launch(p as GameId); else { api.print("This program requires Silicon 95."); dos.resume(); } },
     });
     let booted = false;
     let ctrl = false, alt = false;

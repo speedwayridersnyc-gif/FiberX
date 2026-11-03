@@ -13,6 +13,7 @@ const DISK: { name: string; type: string; blocks: number; game?: GameId | "write
   { name: "JUNGLE RUN", type: "PRG", blocks: 48, game: "jungle" as GameId },
   { name: "PALACE ESCAPE", type: "PRG", blocks: 64, game: "palace" as GameId },
   { name: "PADDLE", type: "PRG", blocks: 9, game: "paddle" as GameId },
+  { name: "LUNAR SIEGE", type: "PRG", blocks: 21, game: "siege" as GameId },
   { name: "README", type: "SEQ", blocks: 1 },
 ];
 

@@ -6,7 +6,7 @@ import { subscribeKeys } from "@/lib/keybus";
 import { ExhibitShell } from "../ExhibitShell";
 import { ScaledScreen } from "../ScaledScreen";
 import { KeyBridge } from "../KeyBridge";
-import { TouchPad } from "../TouchPad";
+import { TouchPad, PadGame } from "../TouchPad";
 import { Trackpad } from "../hw/Trackpad";
 import { PaddleStrip } from "../games/Paddle";
 import { CRT } from "../hw/CRT";
@@ -23,16 +23,16 @@ import { Editor } from "../editor/Editor";
 import type { DosProgram } from "@/lib/dos";
 
 const SW = 640, SH = 480, TASK = 28;
-type App = "writepad" | "notepad" | "paint" | "mine" | "cmd" | "jungle" | "palace" | "bricks" | "snake" | "paddle" | "mycomp" | "drivea" | "drivec" | "recycle" | "msg" | "run" | "readme" | "clock";
+type App = "writepad" | "notepad" | "paint" | "mine" | "cmd" | "jungle" | "palace" | "bricks" | "snake" | "paddle" | "siege" | "mycomp" | "drivea" | "drivec" | "recycle" | "msg" | "run" | "readme" | "clock";
 interface Win { id: number; app: App; title: string; x: number; y: number; z: number; min: boolean; data?: string }
 const META: Record<App, { title: string; icon: string; w?: number }> = {
   notepad: { title: "Untitled - Notepad", icon: "📝" }, writepad: { title: "Document - WritePad", icon: "📄" }, paint: { title: "untitled - Paint", icon: "🎨" }, mine: { title: "Minefield", icon: "💣" },
   cmd: { title: "Command Prompt", icon: "▪" }, jungle: { title: "Jungle Run", icon: "🌴" }, palace: { title: "Palace Escape", icon: "🏰" },
-  bricks: { title: "Bricks", icon: "🧱" }, snake: { title: "Snake", icon: "🐍" }, paddle: { title: "Paddle", icon: "🏓" }, mycomp: { title: "My Computer", icon: "🖥" },
+  bricks: { title: "Bricks", icon: "🧱" }, snake: { title: "Snake", icon: "🐍" }, paddle: { title: "Paddle", icon: "🏓" }, siege: { title: "Lunar Siege", icon: "🌙" }, mycomp: { title: "My Computer", icon: "🖥" },
   drivea: { title: "3½ Floppy (A:)", icon: "💾" }, drivec: { title: "(C:)", icon: "🗄" }, recycle: { title: "Recycle Bin", icon: "🗑" },
   msg: { title: "Error", icon: "⚠" }, run: { title: "Run", icon: "▶" }, readme: { title: "README.TXT - Notepad", icon: "📝" }, clock: { title: "Date/Time Properties", icon: "🕓" },
 };
-const GAME_APPS: App[] = ["jungle", "palace", "bricks", "snake", "paddle"];
+const GAME_APPS: App[] = ["jungle", "palace", "bricks", "snake", "paddle", "siege"];
 
 function Icon({ glyph, label, onOpen, small }: { glyph: string; label: string; onOpen: () => void; small?: boolean }) {
   const [sel, setSel] = useState(false);
@@ -133,7 +133,7 @@ function Inner() {
 
   const doRun = () => {
     const t = runText.trim().toLowerCase().replace(/\.exe$/, "");
-    const map: Record<string, App> = { writepad: "writepad", write: "writepad", notepad: "notepad", edit: "notepad", pbrush: "paint", paint: "paint", command: "cmd", cmd: "cmd", minefld: "mine", minefield: "mine", winmine: "mine", jungle: "jungle", palace: "palace", bricks: "bricks", snake: "snake", paddle: "paddle", "a:": "drivea", "c:": "drivec" };
+    const map: Record<string, App> = { writepad: "writepad", write: "writepad", notepad: "notepad", edit: "notepad", pbrush: "paint", paint: "paint", command: "cmd", cmd: "cmd", minefld: "mine", minefield: "mine", winmine: "mine", jungle: "jungle", palace: "palace", bricks: "bricks", snake: "snake", paddle: "paddle", siege: "siege", lunar: "siege", "a:": "drivea", "c:": "drivec" };
     setWins((ws) => ws.filter((w) => w.app !== "run"));
     const app = map[t];
     if (!app) { errorBox(`Cannot find the file '${runText}' (or one of its components).`); return; }
@@ -155,7 +155,7 @@ function Inner() {
       case "paint": return <div className="w95-paintwrap"><Paint width={360} height={220} theme="win" palette={["#ffffff", "#000000", "#808080", "#c0c0c0", "#800000", "#ff0000", "#808000", "#ffff00", "#008000", "#00ff00", "#008080", "#00ffff", "#000080", "#0000ff", "#800080", "#ff00ff"]} onPaint={(i) => { if (i.color !== undefined) { colors.current.add(i.color); if (colors.current.size >= 3) unlock("w95-paint"); } }} /></div>;
       case "mine": return <div className="w95-minewrap"><Minefield onEvent={(e) => e === "win" && unlock("w95-mine")} /></div>;
       case "cmd": return <W95Cmd focused={f} unlock={unlock} hasFloppy={() => floppyRef.current} launch={launchDos} onEdit={(file) => open("notepad", file)} onExit={() => close(w.id)} />;
-      case "jungle": case "palace": case "bricks": case "snake": case "paddle":
+      case "jungle": case "palace": case "bricks": case "snake": case "paddle": case "siege":
         return <div className="w95-game"><GameHost game={w.app} active={f} brickTheme={BRICK_WIN} snakeTheme={SNAKE_C64} /></div>;
       case "mycomp": return <div className="w95-folder w95-sunken"><Icon glyph="💾" label="3½ Floppy (A:)" onOpen={() => openDrive("a")} /><Icon glyph="🗄" label="(C:)" onOpen={() => openDrive("c")} /><Icon glyph="🖨" label="Printers" onOpen={() => errorBox("No printers are installed. This is a museum.")} /><Icon glyph="⚙" label="Control Panel" onOpen={() => open("clock")} /></div>;
       case "drivea": return <div className="w95-folder w95-sunken">
@@ -164,7 +164,7 @@ function Inner() {
       </div>;
       case "drivec": return <div className="w95-folder w95-sunken">
         <Icon glyph="📁" label="GAMES" onOpen={() => open("mycomp")} /><Icon glyph="📁" label="SYS95" onOpen={() => errorBox("Access to the system folder is closed for conservation.")} />
-        <Icon glyph="🌴" label="JUNGLE.EXE" onOpen={() => open("jungle")} /><Icon glyph="🏰" label="PALACE.EXE" onOpen={() => open("palace")} /><Icon glyph="🧱" label="BRICKS.EXE" onOpen={() => open("bricks")} /><Icon glyph="🐍" label="SNAKE.EXE" onOpen={() => open("snake")} /><Icon glyph="🏓" label="PADDLE.EXE" onOpen={() => open("paddle")} />
+        <Icon glyph="🌴" label="JUNGLE.EXE" onOpen={() => open("jungle")} /><Icon glyph="🏰" label="PALACE.EXE" onOpen={() => open("palace")} /><Icon glyph="🧱" label="BRICKS.EXE" onOpen={() => open("bricks")} /><Icon glyph="🐍" label="SNAKE.EXE" onOpen={() => open("snake")} /><Icon glyph="🏓" label="PADDLE.EXE" onOpen={() => open("paddle")} /><Icon glyph="🌙" label="SIEGE.EXE" onOpen={() => open("siege")} />
       </div>;
       case "recycle": return <div className="w95-folder w95-sunken w95-empty">The Recycle Bin is empty.<br /><small>(Someone already threw out the floppy labels.)</small></div>;
       case "clock": return <div className="w95-clockdlg"><div className="w95-bigclock">{new Date().toLocaleTimeString("en-US")}</div><div>{new Date().toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</div><button className="w95-btn" onClick={() => close(w.id)}>OK</button></div>;
@@ -215,7 +215,7 @@ function Inner() {
                 {startItem("Documents", "📄", () => open("notepad"), false, () => setSub(""))}
                 {startItem("Settings", "⚙", () => open("clock"), false, () => setSub(""))}
                 {startItem("Find", "🔍", () => errorBox("Find is closed for restoration."), false, () => setSub(""))}
-                {startItem("Help", "❓", () => open("readme", "SILICON 95 HELP\n\n- Double-click icons to open them.\n- Click a taskbar button to minimise or restore.\n- Start > Programs > Games has Jungle Run and Palace Escape.\n- Start > Run… accepts notepad, pbrush, command, minefld, jungle, palace, bricks, snake.\n- There are 50 secrets on this machine.", "Help"), false, () => setSub(""))}
+                {startItem("Help", "❓", () => open("readme", "SILICON 95 HELP\n\n- Double-click icons to open them.\n- Click a taskbar button to minimise or restore.\n- Start > Programs > Games has Jungle Run and Palace Escape.\n- Start > Run… accepts notepad, pbrush, command, minefld, jungle, palace, bricks, snake, siege.\n- There are 50 secrets on this machine.", "Help"), false, () => setSub(""))}
                 {startItem("Run…", "▶", () => open("run"), false, () => setSub(""))}
                 <div className="w95-sep" />
                 {startItem("Shut Down…", "⏻", () => { setStart(false); setShutdownDlg(true); }, false, () => setSub(""))}
@@ -227,7 +227,7 @@ function Inner() {
                   {startItem("Command Prompt", "▪", () => open("cmd"))}
                   {startItem("Silicon Explorer", "🖥", () => open("mycomp"))}
                   {sub === "accessories" && <div className="w95-submenu nested">{startItem("WritePad", "📄", () => open("writepad"))}{startItem("Notepad", "📝", () => open("notepad"))}{startItem("Paint", "🎨", () => open("paint"))}{startItem("Clock", "🕓", () => open("clock"))}</div>}
-                  {sub === "games" && <div className="w95-submenu nested" style={{ top: 22 }}>{startItem("Minefield", "💣", () => open("mine"))}{startItem("Jungle Run", "🌴", () => open("jungle"))}{startItem("Palace Escape", "🏰", () => open("palace"))}{startItem("Bricks", "🧱", () => open("bricks"))}{startItem("Snake", "🐍", () => open("snake"))}{startItem("Paddle", "🏓", () => open("paddle"))}</div>}
+                  {sub === "games" && <div className="w95-submenu nested" style={{ top: 22 }}>{startItem("Minefield", "💣", () => open("mine"))}{startItem("Jungle Run", "🌴", () => open("jungle"))}{startItem("Palace Escape", "🏰", () => open("palace"))}{startItem("Bricks", "🧱", () => open("bricks"))}{startItem("Snake", "🐍", () => open("snake"))}{startItem("Paddle", "🏓", () => open("paddle"))}{startItem("Lunar Siege", "🌙", () => open("siege"))}</div>}
                 </div>
               )}
             </div>
@@ -271,7 +271,7 @@ function Inner() {
         </button>
       </div>
       {!power && <p className="hint">Press <b>Power on</b> (or the tower&apos;s power button). The ◆/▣ key opens Start.</p>}
-      {wins.some((w) => w.id === focus && w.app === "paddle" && !w.min) ? <PaddleStrip /> : gameFocused ? <TouchPad /> : phase === "desktop" && <Trackpad label="Mouse pad" buttons={2} />}
+      {wins.some((w) => w.id === focus && w.app === "paddle" && !w.min) ? <PaddleStrip /> : gameFocused ? <TouchPad game={(wins.find((w) => w.id === focus)?.app ?? "palace") as PadGame} /> : phase === "desktop" && <Trackpad label="Mouse pad" buttons={2} />}
     </div>
   );
   return (

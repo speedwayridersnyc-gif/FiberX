@@ -5,9 +5,10 @@ import { JungleRun, JREvent } from "./JungleRun";
 import { Snake, SnakeTheme, SNAKE_C64 } from "./Snake";
 import { Brickwork, BrickTheme, BRICK_CGA } from "../s500/Brickwork";
 import { Paddle, PaddleEvent } from "./Paddle";
+import { LunarSiege } from "./LunarSiege";
 
-export type GameId = "palace" | "jungle" | "snake" | "bricks" | "paddle";
-export const GAME_TITLES: Record<GameId, string> = { palace: "Palace Escape", jungle: "Jungle Run", snake: "Snake", bricks: "Bricks", paddle: "Paddle" };
+export type GameId = "palace" | "jungle" | "snake" | "bricks" | "paddle" | "siege";
+export const GAME_TITLES: Record<GameId, string> = { palace: "Palace Escape", jungle: "Jungle Run", snake: "Snake", bricks: "Bricks", paddle: "Paddle", siege: "Lunar Siege" };
 
 export function useGameSecrets() {
   const sec = useOptionalSecrets();
@@ -30,5 +31,6 @@ export function GameHost({ game, active, mono = false, snakeTheme = SNAKE_C64, b
     case "snake": return <Snake active={active} theme={snakeTheme} onEvent={g.snake} />;
     case "paddle": return <Paddle mono={mono} active={active} onEvent={g.paddle} />;
     case "bricks": return <Brickwork active={active} theme={brickTheme} onScore={g.bricksScore} onClear={g.bricksClear} />;
+    case "siege": return <LunarSiege active={active} theme={snakeTheme} mono={mono} />;
   }
 }

@@ -13,7 +13,7 @@ function s800Color(hue: number, lum: number) {
 }
 const CARTS: Record<string, { title: string; game?: GameId; writer?: boolean }> = {
   writer: { title: "WRITER", writer: true },
-  basic: { title: "BASIC" }, jungle: { title: "JUNGLE RUN", game: "jungle" }, palace: { title: "PALACE ESCAPE", game: "palace" }, snake: { title: "SNAKE", game: "snake" }, paddle: { title: "PADDLE", game: "paddle" },
+  basic: { title: "BASIC" }, jungle: { title: "JUNGLE RUN", game: "jungle" }, palace: { title: "PALACE ESCAPE", game: "palace" }, snake: { title: "SNAKE", game: "snake" }, paddle: { title: "PADDLE", game: "paddle" }, siege: { title: "LUNAR SIEGE", game: "siege" },
 };
 const BG = "#1b5aa0", FG = "#a6d3ff";
 const seen = new Set<string>();
@@ -30,6 +30,7 @@ const S800: ConsoleMachine = {
     { id: "writer", label: "WRITER", color: "#5a4a8a", sub: "Word processor" },
     { id: "paddle", label: "PADDLE", color: "#22495e", sub: "Sports · 1-2P" },
     { id: "snake", label: "SNAKE", color: "#8a6a12", sub: "Arcade" },
+    { id: "siege", label: "LUNAR SIEGE", color: "#1f2a4a", sub: "Arcade shooter" },
   ] },
   snakeTheme: SNAKE_S800,
   writer: { theme: "s800", secret: "s800-write" }, bootDelay: 600,

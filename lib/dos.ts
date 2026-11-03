@@ -1,7 +1,7 @@
 import type { ConsoleApi } from "@/components/console/useConsole";
 import { listFiles } from "./vdisk";
 
-export type DosProgram = "bricks" | "jungle" | "palace" | "snake" | "paddle" | "notepad" | "paint" | "minefield";
+export type DosProgram = "bricks" | "jungle" | "palace" | "snake" | "paddle" | "siege" | "notepad" | "paint" | "minefield";
 type Node = { dir: true; kids: Record<string, Node>; date: string } | { dir: false; text: string; size?: number; exe?: DosProgram; date: string };
 const f = (text: string, date = "11-02-91"): Node => ({ dir: false, text, date });
 const exe = (p: DosProgram, size: number, date = "06-14-92"): Node => ({ dir: false, text: "MZ\u0090\u0003 binary", size, exe: p, date });
@@ -29,8 +29,8 @@ function makeFs(win: boolean) {
     "CONFIG.SYS": f("FILES=30\nBUFFERS=20\nDEVICE=C:\\DOS\\HIMEM.SYS\nDOS=HIGH"),
     DOS: d({ "HIMEM.SYS": f("(driver)"), "EDIT.COM": f("(editor)"), "FORMAT.COM": f("(formatter)"), "MEM.EXE": f("(memory report)") }),
     GAMES: d({
-      "BRICKS.EXE": exe("bricks", 38211), "JUNGLE.EXE": exe("jungle", 61440), "PALACE.EXE": exe("palace", 88064), "SNAKE.EXE": exe("snake", 12800), "PADDLE.EXE": exe("paddle", 9216),
-      "README.TXT": f("SILICON HALL GAMES SHELF\n\nBRICKS   - break every brick. Arrow keys / mouse.\nJUNGLE   - Jungle Run. Swing on vines, mind the crocs.\nPALACE   - Palace Escape. Ledges, guards, potions.\nSNAKE    - eat, grow, don't bite yourself.\nPADDLE   - paddle tennis, 1P vs CPU or 2P. First to 11.\n\nType the name of a game to play. Esc returns to DOS."),
+      "BRICKS.EXE": exe("bricks", 38211), "JUNGLE.EXE": exe("jungle", 61440), "PALACE.EXE": exe("palace", 88064), "SNAKE.EXE": exe("snake", 12800), "PADDLE.EXE": exe("paddle", 9216), "SIEGE.EXE": exe("siege", 17408),
+      "README.TXT": f("SILICON HALL GAMES SHELF\n\nBRICKS   - break every brick. Arrow keys / mouse.\nJUNGLE   - Jungle Run. Swing on vines, mind the crocs.\nPALACE   - Palace Escape. Ledges, guards, potions.\nSNAKE    - eat, grow, don't bite yourself.\nPADDLE   - paddle tennis, 1P vs CPU or 2P. First to 11.\nSIEGE    - Lunar Siege. Hold the line against the waves.\n\nType the name of a game to play. Esc returns to DOS."),
     }),
     MUSEUM: d({
       "WELCOME.TXT": f("Welcome, visitor.\n\nThis machine is a reconstruction, not an emulator: every\nprogram here is original. Try VER, MEM, DIR /W, and look\nfor a floppy in drive A:."),
@@ -117,7 +117,7 @@ export function createDos(api: ConsoleApi, h: DosHooks) {
       case "VER": api.print(""); api.print(h.gui ? "Silicon 95. [Version 4.00.950]" : "SH-DOS Version 6.22 (Silicon Hall reconstruction)"); P("ver"); return done();
       case "HELP": case "?":
         api.print("For more information on a command, ask the curator.");
-        ["CD       Change directory", "CLS      Clear the screen", "DATE     Show the date", "DIR      List files (/W wide)", "ECHO     Print a message", "EDIT     Full-screen text editor (EDIT NOTES.TXT)", "FORMAT   Format a disk", "MEM      Show memory", "TIME     Show the time", "TYPE     Show a text file", "VER      Show the version", "A: C:    Change drive", h.gui ? "EXIT     Close this window" : "BRICKS JUNGLE PALACE SNAKE PADDLE  Play"].forEach((x) => api.print(x));
+        ["CD       Change directory", "CLS      Clear the screen", "DATE     Show the date", "DIR      List files (/W wide)", "ECHO     Print a message", "EDIT     Full-screen text editor (EDIT NOTES.TXT)", "FORMAT   Format a disk", "MEM      Show memory", "TIME     Show the time", "TYPE     Show a text file", "VER      Show the version", "A: C:    Change drive", h.gui ? "EXIT     Close this window" : "BRICKS JUNGLE PALACE SNAKE PADDLE SIEGE  Play"].forEach((x) => api.print(x));
         P("help"); return done();
       case "ECHO": api.print(rest || "ECHO is on."); return done();
       case "DATE": api.print(`Current date is ${new Date().toLocaleDateString("en-US", { weekday: "short", month: "2-digit", day: "2-digit", year: "numeric" }).replace(",", "")}`); return done();

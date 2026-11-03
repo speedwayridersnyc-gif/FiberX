@@ -220,7 +220,7 @@ function ClassicInner() {
         </div>
       </div>
       {power === "off" && <p className="hint">Press <b>Power on</b> to boot the exhibit. Double-click (or double-tap) icons to open them.</p>}
-      {focusedApp === "paddle" ? <PaddleStrip /> : (focusedApp === "palace" || focusedApp === "jungle") ? <TouchPad /> : power === "on" && <Trackpad label="Mouse pad" />}
+      {focusedApp === "paddle" ? <PaddleStrip /> : (focusedApp === "palace" || focusedApp === "jungle") ? <TouchPad game={focusedApp} /> : power === "on" && <Trackpad label="Mouse pad" />}
     </div>
   );
 

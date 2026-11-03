@@ -8,9 +8,10 @@
 .exhibit-page[data-layout="dual"] .exhibit-bar .btn { padding: 4px 10px; font-size: 12px; }
 .exhibit-page[data-layout="dual"] .back-link { font-size: 12px; padding: 4px 10px 4px 8px; }
 .machine-fit { flex: 1; min-height: 0; width: 100%; display: flex; justify-content: center; align-items: flex-end; container-type: size; }
-.exhibit-page[data-layout="dual"] .pedestal { max-width: none; width: min(100%, calc(var(--rig-aspect) * (100cqh - 30px))); padding-top: 6px; height: 100%; justify-content: flex-end; }
+.exhibit-page[data-layout="dual"] .pedestal { max-width: none; width: min(100%, calc(var(--rig-aspect) * (100cqh - 10px))); padding-top: 2px; height: 100%; justify-content: flex-end; }
+.exhibit-page[data-layout="dual"] .half-machine .exhibit-bar { padding: 3px 8px; }
 .exhibit-page[data-layout="dual"] .pedestal-stage { flex: 0 1 auto; }
-.pedestal.compact .pedestal-top { height: 14px; margin-top: -6px; width: 112%; }
+.pedestal.compact .pedestal-top { height: 10px; margin-top: -4px; width: 112%; }
 .pedestal.compact .pedestal-body { display: none; }
 .exhibit-page[data-layout="dual"] .hinge { display: flex; align-items: center; justify-content: center; width: auto; background: linear-gradient(180deg, #05070b, #1d2333 30%, #3a4256 50%, #1d2333 70%, #05070b); box-shadow: 0 0 18px rgba(0,0,0,.8); position: relative; z-index: 5; }
 .exhibit-page[data-layout="dual"] .hinge span { width: 70%; height: 3px; border-radius: 2px; background: linear-gradient(90deg, transparent, #b8893b 15%, #e2bf73 50%, #b8893b 85%, transparent); opacity: .55; }

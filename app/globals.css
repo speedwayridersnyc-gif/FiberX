@@ -215,6 +215,7 @@ button { font: inherit; color: inherit; }
 .pad-btn.up { grid-area: up; } .pad-btn.left { grid-area: left; } .pad-btn.right { grid-area: right; } .pad-btn.down { grid-area: down; }
 .pad-actions { display: flex; gap: 12px; }
 .pad-btn.walk, .pad-btn.strike, .pad-btn.jump { width: 72px; height: 72px; border-radius: 50%; font-size: 15px; }
+.pad-btn.fire { border-color: var(--jade); color: var(--jade-2); }
 .pad-btn.jump { border-color: var(--brass); color: var(--brass-2); font-weight: 700; letter-spacing: .02em; box-shadow: 0 0 0 1px rgba(217,171,91,.15), 0 6px 14px rgba(0,0,0,.4); }
 .pad-btn.strike { font-size: 26px; border-color: var(--jade); color: var(--jade-2); }
 

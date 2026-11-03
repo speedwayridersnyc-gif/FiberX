@@ -21,7 +21,7 @@ function Inner() {
       </header>
       <div className="pe-stage">
         <div className="pe-frame"><JungleRun mono={mono} active onEvent={g.jungle} className="pe-big" /></div>
-        <TouchPad />
+        <TouchPad game="jungle" />
       </div>
       <p className="pe-help">Keyboard: ← → run · ↑ / Space jump (leap into a vine to grab it) · ↓ let go of a vine. Hop the logs, leap the tar pits, time the crocodiles&apos; jaws and grab all six treasures before the timer runs out. Secrets found here count toward the Atari 800 exhibit.</p>
     </main>
