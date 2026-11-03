@@ -40,7 +40,8 @@ rm -rf "$OUT" && mkdir -p "$OUT"
 cd ios/App
 xcodebuild -workspace App.xcworkspace -scheme App -configuration Release \
   -destination 'generic/platform=iOS' -archivePath "$OUT/App.xcarchive" \
-  -allowProvisioningUpdates "${AUTH[@]}" DEVELOPMENT_TEAM="$TEAM" CODE_SIGN_STYLE=Automatic archive | tail -30
+  -allowProvisioningUpdates "${AUTH[@]}" DEVELOPMENT_TEAM="$TEAM" CODE_SIGN_STYLE=Automatic \
+  CODE_SIGN_IDENTITY="Apple Distribution" archive | tail -30
 echo "archive ok: $OUT/App.xcarchive"
 
 if [ "$1" = "upload" ]; then
