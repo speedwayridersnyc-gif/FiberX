@@ -5,7 +5,7 @@
 # Output is also written to ~/ios-build.log
 export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
 exec > >(tee -a "$HOME/ios-build.log") 2>&1
-set -e
+set -e -o pipefail
 echo "=== $(date) start ($1)"
 cd "$HOME"
 rm -rf silicon-hall
