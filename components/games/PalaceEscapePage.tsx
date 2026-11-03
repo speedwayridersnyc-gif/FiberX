@@ -31,7 +31,7 @@ function Inner() {
         <div className="pe-frame"><PalaceEscape mono={mono} active onEvent={onEvent} className="pe-big" /></div>
         <TouchPad />
       </div>
-      <p className="pe-help">Keyboard: ← → run · ↑ jump (while running: running jump; facing a ledge: climb) · ↓ hang from an edge / drop · Shift careful walk (safe over spikes) · Space / X sword · ↑ in a duel parries. Escape three levels before the hourglass empties. Secrets found here count toward the Macintosh exhibit.</p>
+      <p className="pe-help">Keyboard: ← → run · ↑ jump (while running: running jump; facing a ledge: climb) · ↓ hang from an edge / drop · Space / X sword · spikes cost a heart, so jump over them · ↑ in a duel parries. Escape three levels before the hourglass empties. Secrets found here count toward the Macintosh exhibit.</p>
     </main>
   );
 }

@@ -10,7 +10,7 @@ function PadButton({ k, label, className, aria }: { k: string; label: React.Reac
 
 export type PadGame = "palace" | "jungle" | "snake" | "bricks" | "siege" | "paddle";
 /** On-screen game controls; emits the same key events as a physical keyboard. The action buttons follow the game:
- *  palace = Walk / Jump / Sword · jungle = Jump (also lets go of a vine) · bricks = Launch · siege = Fire · snake = d-pad only. */
+ *  palace = Jump / Sword · jungle = Jump (also lets go of a vine) · bricks = Launch · siege = Fire · snake = d-pad only. */
 export function TouchPad({ extra = true, game = "palace" }: { extra?: boolean; game?: PadGame }) {
   return (
     <div className="touchpad" role="group" aria-label="Game controls">
@@ -22,7 +22,6 @@ export function TouchPad({ extra = true, game = "palace" }: { extra?: boolean; g
       </div>
       {extra && (
         <div className="pad-actions">
-          {game === "palace" && <PadButton k="Shift" label="Walk" className="walk" aria="Careful walk (hold)" />}
           {(game === "palace" || game === "jungle") && <PadButton k="ArrowUp" label="Jump" className="jump" aria="Jump / let go of a vine" />}
           {game === "palace" && <PadButton k=" " label="⚔" className="strike" aria="Sword strike" />}
           {game === "bricks" && <PadButton k=" " label="Launch" className="jump" aria="Launch the ball" />}

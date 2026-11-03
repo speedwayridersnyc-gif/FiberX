@@ -19,7 +19,7 @@ interface Actor { x: number; y: number; dir: number; pose: Pose; phase: number }
 interface Player extends Actor {
   vx: number; vy: number; state: "ground" | "air" | "hang" | "climb" | "dead" | "exit";
   hp: number; maxHp: number; fallTop: number; jumpUp: boolean; hang: { c: number; r: number }; climb: { t: number; sx: number; sy: number; ex: number; ey: number };
-  strikeT: number; struck: boolean; blockT: number; blockCd: number; hurtT: number; deadT: number; turnT: number; walking: boolean;
+  strikeT: number; struck: boolean; blockT: number; blockCd: number; hurtT: number; deadT: number; turnT: number; walking: boolean; spikeT: number;
 }
 interface Guard extends Actor { hp: number; max: number; state: "idle" | "ready" | "windup" | "strike" | "dead"; t: number; cd: number; hurtT: number; skill: number; strong: boolean; flash: number }
 interface World {
@@ -51,7 +51,7 @@ function makeWorld(level: number, hp: number, maxHp: number): World {
     if (grid[r][c] === "G") gates.push({ c, r, open: 0, timer: 0 });
     if (grid[r][c] === "p") plates.push({ c, r, down: 0 });
   }
-  const p: Player = { x: sx, y: sy, dir: 1, pose: { ...P0 }, phase: 0, vx: 0, vy: 0, state: "ground", hp, maxHp, fallTop: sy, jumpUp: false, hang: { c: 0, r: 0 }, climb: { t: 0, sx: 0, sy: 0, ex: 0, ey: 0 }, strikeT: 0, struck: false, blockT: 0, blockCd: 0, hurtT: 0, deadT: 0, turnT: 0, walking: false };
+  const p: Player = { x: sx, y: sy, dir: 1, pose: { ...P0 }, phase: 0, vx: 0, vy: 0, state: "ground", hp, maxHp, fallTop: sy, jumpUp: false, hang: { c: 0, r: 0 }, climb: { t: 0, sx: 0, sy: 0, ex: 0, ey: 0 }, strikeT: 0, struck: false, blockT: 0, blockCd: 0, hurtT: 0, deadT: 0, turnT: 0, walking: false, spikeT: 0 };
   return { level, grid, cols, p, guards, loose: new Map(), debris: [], rubble: [], gates, plates, spikes: new Map(), msg: { text: def.name, sub: def.subtitle, t: 2.6 }, sparks: [] };
 }
 
@@ -110,7 +110,7 @@ export function PalaceEscape({ mono = false, active = true, onEvent, className }
 
     const updatePlayer = (dt: number, k: Record<string, boolean>, edge: (n: string) => boolean) => {
       const p = W.p;
-      p.blockT -= dt; p.blockCd -= dt; p.hurtT -= dt; p.turnT -= dt;
+      p.blockT -= dt; p.blockCd -= dt; p.hurtT -= dt; p.turnT -= dt; p.spikeT -= dt;
       if (p.state === "dead") { p.deadT -= dt; if (p.deadT <= 0) restartLevel(); return; }
       if (p.state === "exit") { p.climb.t += dt; if (p.climb.t > 1.6) nextLevel(); return; }
       if (p.strikeT > 0) {
@@ -159,12 +159,12 @@ export function PalaceEscape({ mono = false, active = true, onEvent, className }
           if (edge("up")) {
             const r = row(p.y - 1), cf = col(p.x + p.dir * 10);
             const face = p.dir > 0 ? cf * T : (cf + 1) * T;
-            if (Math.abs(p.vx) > 70) { p.state = "air"; p.vy = -240; p.vx = p.dir * 170; p.fallTop = p.y; p.jumpUp = false; }
+            if (Math.abs(p.vx) > 70) { p.state = "air"; p.vy = -252; p.vx = p.dir * 190; p.fallTop = p.y; p.jumpUp = false; }
             else if (cf !== col(p.x) && solid(cf, r) && !solid(cf, r - 1) && !solid(col(p.x), r - 1) && Math.abs(face - p.x) < 28) {
               p.x = face - p.dir * 7; p.hang = { c: cf, r }; p.state = "climb";
               p.climb = { t: 0, sx: p.x, sy: p.y, ex: p.dir > 0 ? cf * T + 10 : cf * T + 22, ey: r * T };
               return;
-            } else if (h !== 0) { p.state = "air"; p.vy = -200; p.vx = p.dir * 85; p.fallTop = p.y; p.jumpUp = false; }
+            } else if (h !== 0) { p.state = "air"; p.vy = -215; p.vx = p.dir * 110; p.fallTop = p.y; p.jumpUp = false; }
             else { p.state = "air"; p.vy = -268; p.vx = 0; p.fallTop = p.y; p.jumpUp = true; }
           } else if (edge("down")) {
             const c = col(p.x), r = row(p.y - 1);
@@ -212,7 +212,14 @@ export function PalaceEscape({ mono = false, active = true, onEvent, className }
       if (isDead()) return;
       // tile interactions
       const fc = col(p.x), fr = row(p.y - 1), ft = tile(fc, fr);
-      if (ft === "^" && (landed || Math.abs(p.vx) > 60)) { W.spikes.set(`${fc},${fr}`, 1); die("spikes"); return; }
+      const inSpikes = ft === "^" && Math.abs(p.x - (fc * T + 16)) < 10;
+      // only when the feet are actually on the spike floor: landing on it, or running across it on the ground
+      if (inSpikes && (landed || (p.state === "ground" && Math.abs(p.vx) > 60)) && p.spikeT <= 0) {
+        W.spikes.set(`${fc},${fr}`, 1); p.spikeT = 1.4; p.hp--; p.hurtT = 0.5;
+        if (p.hp <= 0) { die("spikes"); return; }
+        say("Ouch! Spikes", "Jump over them", 1.2);
+        const back = p.vx !== 0 ? -Math.sign(p.vx) : -p.dir; p.state = "air"; p.vy = -170; p.vx = back * 90; p.fallTop = p.y; p.jumpUp = false;
+      }
       if (ft === "!" || ft === "+") {
         W.grid[fr][fc] = " ";
         if (ft === "+") { p.maxHp = Math.min(6, p.maxHp + 1); levelStartMax = p.maxHp; p.hp = p.maxHp; say("Life grows stronger", undefined, 1.4); }
@@ -438,7 +445,7 @@ export function PalaceEscape({ mono = false, active = true, onEvent, className }
       ctx.fillText(`TIME ${mm}:${String(ss).padStart(2, "0")}`, VW / 2, VH + 8.5);
       ctx.textAlign = "left"; ctx.fillStyle = pal.floor; ctx.fillText(`LV${W.level + 1}`, 64, VH + 8.5);
       if (W.msg || over || !started) {
-        const lines = over === "win" ? ["You escaped the palace!", `Time remaining ${mm}:${String(ss).padStart(2, "0")}`, "Press strike to play again"] : over === "timeout" ? ["The hourglass is empty.", "Press strike to try again"] : !started ? ["PALACE ESCAPE", "← → run · ↑ jump/climb · ↓ hang", "Shift: careful walk · Space: sword"] : [W.msg!.text, W.msg!.sub ?? ""];
+        const lines = over === "win" ? ["You escaped the palace!", `Time remaining ${mm}:${String(ss).padStart(2, "0")}`, "Press strike to play again"] : over === "timeout" ? ["The hourglass is empty.", "Press strike to try again"] : !started ? ["PALACE ESCAPE", "← → run · ↑ jump/climb · ↓ hang", "Space: sword · jump over the spikes"] : [W.msg!.text, W.msg!.sub ?? ""];
         ctx.fillStyle = mono ? "rgba(0,0,0,.8)" : "rgba(7,10,16,.72)"; ctx.fillRect(20, 58, VW - 40, 62);
         ctx.strokeStyle = pal.floor; ctx.lineWidth = 1; ctx.strokeRect(20.5, 58.5, VW - 41, 61);
         ctx.textAlign = "center"; ctx.fillStyle = pal.text; ctx.font = "bold 12px Georgia, serif"; ctx.fillText(lines[0], VW / 2, 76);

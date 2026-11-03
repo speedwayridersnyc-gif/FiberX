@@ -31,7 +31,7 @@ jobs:
         working-directory: android
         env:
           # Manual runs set these; pushes use the defaults below. Bump before each Play upload.
-          ANDROID_VERSION_CODE: ${{ inputs.version_code || '5' }}
+          ANDROID_VERSION_CODE: ${{ inputs.version_code || '6' }}
           ANDROID_VERSION_NAME: ${{ inputs.version_name || '1.0.0' }}
         run: |
           chmod +x gradlew
@@ -40,7 +40,7 @@ jobs:
       - name: Publish the build files to the builds branch
         env:
           VN: ${{ inputs.version_name || '1.0.0' }}
-          VC: ${{ inputs.version_code || '5' }}
+          VC: ${{ inputs.version_code || '6' }}
         run: |
           set -e
           rm -rf /tmp/pub && mkdir -p /tmp/pub
@@ -52,7 +52,7 @@ jobs:
           git push -f "https://x-access-token:${{ github.token }}@github.com/$GITHUB_REPOSITORY.git" builds
       - uses: actions/upload-artifact@v4
         with:
-          name: silicon-hall-android-${{ inputs.version_name || '1.0.0' }}-${{ inputs.version_code || '5' }}
+          name: silicon-hall-android-${{ inputs.version_name || '1.0.0' }}-${{ inputs.version_code || '6' }}
           path: |
             android/app/build/outputs/bundle/release/app-release.aab
             android/app/build/outputs/apk/debug/app-debug.apk
