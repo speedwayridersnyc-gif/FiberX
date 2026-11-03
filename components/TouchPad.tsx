@@ -21,6 +21,7 @@ export function TouchPad({ extra = true }: { extra?: boolean }) {
       {extra && (
         <div className="pad-actions">
           <PadButton k="Shift" label="Walk" className="walk" aria="Careful walk (hold)" />
+          <PadButton k="ArrowUp" label="Jump" className="jump" aria="Jump" />
           <PadButton k=" " label="⚔" className="strike" aria="Sword strike" />
         </div>
       )}
