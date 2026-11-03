@@ -90,7 +90,9 @@ fi
 # Archive unsigned; signing happens at export, where Xcode creates the App Store profile itself.
 xcodebuild -workspace App.xcworkspace -scheme App -configuration Release \
   -destination 'generic/platform=iOS' -archivePath "$OUT/App.xcarchive" \
-  DEVELOPMENT_TEAM="$TEAM" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" archive | tail -15
+  DEVELOPMENT_TEAM="$TEAM" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+  CURRENT_PROJECT_VERSION="${bn:-1}" archive | tail -15
+echo "build number: ${bn:-1}"
 echo "archive ok: $OUT/App.xcarchive"
 
 DEST=export
