@@ -52,7 +52,7 @@ export function JungleRun({ active = true, mono = false, onEvent, className }: {
     const got = new Set<number>();
     let vines = 0, onCroc = false;
     let msg: { text: string; t: number } | null = null;
-    const p = { x: 20, y: GROUND, vx: 0, vy: 0, dir: 1, state: "ground" as "ground" | "air" | "swing" | "dead" | "stumble", t: 0, phase: 0, swingT: 0 };
+    const p = { x: 20, y: GROUND, vx: 0, vy: 0, dir: 1, state: "ground" as "ground" | "air" | "swing" | "dead" | "stumble", t: 0, phase: 0, swingT: 0, noGrab: 0 };
     let logs: number[] = [];
     const enter = (s: number, fromLeft: boolean) => {
       screen = (s + SCREENS.length) % SCREENS.length; onCroc = false;
@@ -82,7 +82,7 @@ export function JungleRun({ active = true, mono = false, onEvent, className }: {
       p.state = "dead"; p.t = 1.4; lives--; say(why); ev.current?.({ type: "death" });
       if (lives <= 0) over = "lives";
     };
-    const restart = () => { score = 2000; timeLeft = TIME; lives = 3; started = false; over = null; got.clear(); vines = 0; p.state = "ground"; p.vx = p.vy = 0; p.y = GROUND; enter(0, true); };
+    const restart = () => { score = 2000; timeLeft = TIME; lives = 3; started = false; over = null; got.clear(); vines = 0; p.state = "ground"; p.vx = p.vy = 0; p.y = GROUND; p.noGrab = 0; enter(0, true); };
 
     const update = (dt: number, k: Record<string, boolean>, edge: (n: string) => boolean) => {
       if (msg) { msg.t -= dt; if (msg.t <= 0) msg = null; }
@@ -93,7 +93,7 @@ export function JungleRun({ active = true, mono = false, onEvent, className }: {
         const tip = vineTip(); p.x = tip.x; p.y = tip.y + 28; p.dir = Math.cos(t * 1.9) >= 0 ? 1 : -1;
         if (edge("jump") || edge("down")) {
           const omega = 0.95 * 1.9 * Math.cos(t * 1.9);
-          p.vx = Math.max(-170, Math.min(170, Math.cos(tip.a) * VINE_L * omega)); p.vy = -140; p.state = "air";
+          p.vx = Math.max(-170, Math.min(170, Math.cos(tip.a) * VINE_L * omega)); p.vy = -140; p.state = "air"; p.noGrab = 0.45;
         }
         return;
       }
@@ -104,8 +104,8 @@ export function JungleRun({ active = true, mono = false, onEvent, className }: {
         if (edge("jump")) { p.state = "air"; p.vy = -255; }
       }
       if (p.state === "air") {
-        p.vy += GRAV * dt;
-        if (SCREENS[screen].vine && p.vy > -200) { const tip = vineTip(); if (Math.hypot(tip.x - p.x, tip.y - (p.y - 26)) < 16) { p.state = "swing"; vines++; ev.current?.({ type: "vine", total: vines }); return; } }
+        p.vy += GRAV * dt; if (p.noGrab > 0) p.noGrab -= dt;
+        if (SCREENS[screen].vine && p.vy > -200 && p.noGrab <= 0) { const tip = vineTip(); if (Math.hypot(tip.x - p.x, tip.y - (p.y - 26)) < 16) { p.state = "swing"; vines++; ev.current?.({ type: "vine", total: vines }); return; } }
       }
       p.x += p.vx * dt;
       if (p.x > W) { enter(screen + 1, true); if (SCREENS[(screen - 1 + SCREENS.length) % SCREENS.length].kind === "croc" && onCroc) ev.current?.({ type: "croc" }); }
