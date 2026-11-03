@@ -18,6 +18,11 @@
   background: radial-gradient(ellipse 70% 40% at 50% 0%, rgba(255,236,200,.07), transparent), linear-gradient(180deg, #1b2131, #121826); }
 .tabletop-kb { flex: 0 0 auto; width: min(100%, calc(var(--kb-aspect, 2.55) * (100cqh - 96px))); display: flex; justify-content: center; }
 .exhibit-page[data-layout="dual"] .tabletop-kb .pkb.standalone { transform: none; }
+/* large keys: only the main cluster, stretched across the bottom screen */
+.exhibit-page[data-layout="dual"][data-keys="large"] .tabletop-kb { --kb-aspect: 2.1; }
+.exhibit-page[data-layout="dual"][data-keys="large"] .tabletop-kb .pkb-cluster:not(:first-child) { display: none; }
+.exhibit-page[data-layout="dual"][data-keys="large"] .tabletop-kb .kc-top { font-size: clamp(7px, 1.5vw, 15px); }
+.exhibit-page[data-layout="dual"][data-keys="large"] .tabletop-kb .kc-mod .kc-top, .exhibit-page[data-layout="dual"][data-keys="large"] .tabletop-kb .kc-acc .kc-top { font-size: clamp(6px, 1.1vw, 12px); }
 .controls-wrap { flex: 1 1 auto; min-height: 0; width: 100%; overflow: auto; display: flex; justify-content: center; }
 .exhibit-page[data-layout="dual"] .controls { gap: 8px; }
 .exhibit-page[data-layout="dual"] .controls .hint { font-size: 11px; }

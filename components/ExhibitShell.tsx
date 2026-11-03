@@ -9,6 +9,9 @@ import { DeviceKeyboard } from "./hw/DeviceKeyboard";
 /** "dual" = two-screen laptop posture (default; top screen = display, bottom = keyboard). "single" = one tall screen. */
 export type LayoutMode = "dual" | "single";
 const KEY = "silicon-hall:layout-v2";
+/** "all" = the full keyboard; "large" = main cluster only, so the keys get bigger on a small bottom screen. */
+export type KeySize = "all" | "large";
+const KEYS_KEY = "silicon-hall:keys";
 
 type NativeFold = { orientation: "horizontal" | "vertical"; state: "flat" | "half-opened"; separating: boolean; occlusion: "full" | "none"; left: number; top: number; width: number; height: number };
 type Posture = { type?: string; addEventListener?: (t: string, f: () => void) => void; removeEventListener?: (t: string, f: () => void) => void };
@@ -19,12 +22,14 @@ export function ExhibitShell({ title, subtitle, machine, controls, theme, keyboa
   aspect?: number;
 }) {
   const [layout, setLayout] = useState<LayoutMode>("dual");
+  const [keys, setKeys] = useState<KeySize>("all");
   const [posture, setPosture] = useState("");
   const [panel, setPanel] = useState(false);
   const { catalog, found } = useSecrets();
   const n = Object.keys(found).filter((id) => catalog.secrets.some((s) => s.id === id)).length;
   useEffect(() => {
     const saved = localStorage.getItem(KEY); if (saved === "dual" || saved === "single") setLayout(saved);
+    const savedKeys = localStorage.getItem(KEYS_KEY); if (savedKeys === "all" || savedKeys === "large") setKeys(savedKeys);
     const dp = (navigator as unknown as { devicePosture?: Posture }).devicePosture;
     if (dp) { const u = () => setPosture(dp.type ?? ""); u(); dp.addEventListener?.("change", u); return () => dp.removeEventListener?.("change", u); }
   }, []);
@@ -41,12 +46,18 @@ export function ExhibitShell({ title, subtitle, machine, controls, theme, keyboa
   const foldVars: Record<string, string> = fold?.orientation === "horizontal" && layout === "dual"
     ? { "--top": `${Math.max(0, fold.top)}px`, "--hinge": `${Math.max(fold.height, fold.occlusion === "full" ? 12 : 0)}px`, "--bot": "1fr" } : {};
   const toggle = () => { const v = layout === "dual" ? "single" : "dual"; setLayout(v); localStorage.setItem(KEY, v); };
+  const toggleKeys = () => { const v = keys === "all" ? "large" : "all"; setKeys(v); localStorage.setItem(KEYS_KEY, v); };
   const bar = (
     <header className="exhibit-bar">
       <BackToHall />
       <div className="exhibit-bar-title">{title} <span className="muted">· {subtitle}</span></div>
       <div className="exhibit-bar-actions">
         <DeviceKeyboard />
+        {keyboard && layout === "dual" && (
+          <button className="btn btn-ghost" onClick={toggleKeys} aria-pressed={keys === "large"} title="Large keys: show only the main typing keys on the bottom screen so each key is bigger">
+            {keys === "large" ? "⌨ All keys" : "⌨ Large keys"}
+          </button>
+        )}
         <button className="btn btn-ghost" onClick={toggle} aria-pressed={layout === "dual"} title="Dual-screen laptop posture: display on the top screen, keyboard on the bottom screen">
           {layout === "dual" ? "▭ Single screen" : "⧉ Dual screen"}
         </button>
@@ -55,7 +66,7 @@ export function ExhibitShell({ title, subtitle, machine, controls, theme, keyboa
     </header>
   );
   return (
-    <main className={`exhibit-page theme-${theme}`} data-layout={layout} data-posture={fold?.state === "half-opened" ? "folded" : posture} data-native-fold={fold ? fold.orientation : undefined} style={{ ["--rig-aspect" as string]: aspect, ...foldVars }}>
+    <main className={`exhibit-page theme-${theme}`} data-layout={layout} data-keys={keys} data-posture={fold?.state === "half-opened" ? "folded" : posture} data-native-fold={fold ? fold.orientation : undefined} style={{ ["--rig-aspect" as string]: aspect, ...foldVars }}>
       {layout === "single" && bar}
       <div className="exhibit-split">
         <section className="half half-machine" aria-label="Display (top screen)">
