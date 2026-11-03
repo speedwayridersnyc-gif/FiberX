@@ -23,12 +23,22 @@ fi
 echo "signing team: ${TEAM:-NOT FOUND}"
 if [ -z "$TEAM" ]; then echo "No Apple signing team found. Sign in to Xcode > Settings > Accounts, then run again."; exit 1; fi
 
+# App Store Connect API key (optional): lets xcodebuild manage signing and upload without an Xcode sign-in.
+#   sh ios-archive.sh upload <issuer-id>   with the key file AuthKey_<KEYID>.p8 in ~/Downloads
+AUTH=()
+KEYFILE=$(ls "$HOME"/Downloads/AuthKey_*.p8 2>/dev/null | head -1)
+if [ -n "$KEYFILE" ] && [ -n "$2" ]; then
+  KEYID=$(basename "$KEYFILE" .p8); KEYID=${KEYID#AuthKey_}
+  AUTH=(-authenticationKeyPath "$KEYFILE" -authenticationKeyID "$KEYID" -authenticationKeyIssuerID "$2")
+  echo "using App Store Connect API key $KEYID"
+fi
+
 OUT="$HOME/silicon-hall-build"
 rm -rf "$OUT" && mkdir -p "$OUT"
 cd ios/App
 xcodebuild -workspace App.xcworkspace -scheme App -configuration Release \
   -destination 'generic/platform=iOS' -archivePath "$OUT/App.xcarchive" \
-  -allowProvisioningUpdates DEVELOPMENT_TEAM="$TEAM" CODE_SIGN_STYLE=Automatic archive | tail -30
+  -allowProvisioningUpdates "${AUTH[@]}" DEVELOPMENT_TEAM="$TEAM" CODE_SIGN_STYLE=Automatic archive | tail -30
 echo "archive ok: $OUT/App.xcarchive"
 
 if [ "$1" = "upload" ]; then
@@ -44,7 +54,7 @@ if [ "$1" = "upload" ]; then
 </dict></plist>
 PLIST
   xcodebuild -exportArchive -archivePath "$OUT/App.xcarchive" -exportOptionsPlist "$OUT/ExportOptions.plist" \
-    -exportPath "$OUT/export" -allowProvisioningUpdates | tail -30
+    -exportPath "$OUT/export" -allowProvisioningUpdates "${AUTH[@]}" | tail -30
   echo "upload finished"
 fi
 echo "=== done"
