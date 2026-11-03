@@ -18,7 +18,9 @@ npx cap sync ios
 
 TEAM="$IOS_TEAM"
 if [ -z "$TEAM" ]; then
-  TEAM=$(security find-identity -v -p codesigning | grep -E 'Apple (Distribution|Development)' | head -1 | sed -E 's/.*\(([A-Z0-9]+)\)".*/\1/')
+  # Prefer the team that holds an App Store distribution certificate
+  TEAM=$(security find-identity -v -p codesigning | grep 'Apple Distribution' | head -1 | sed -E 's/.*\(([A-Z0-9]+)\)".*/\1/')
+  [ -z "$TEAM" ] && TEAM=$(security find-identity -v -p codesigning | grep 'Apple Development' | head -1 | sed -E 's/.*\(([A-Z0-9]+)\)".*/\1/')
 fi
 echo "signing team: ${TEAM:-NOT FOUND}"
 if [ -z "$TEAM" ]; then echo "No Apple signing team found. Sign in to Xcode > Settings > Accounts, then run again."; exit 1; fi
