@@ -38,6 +38,36 @@ fi
 OUT="$HOME/silicon-hall-build"
 rm -rf "$OUT" && mkdir -p "$OUT"
 cd ios/App
+
+if [ "$1" = "signed" ]; then
+  # Archive signed with the App Store profile Xcode already created for this bundle id,
+  # so the archive carries the team and can be distributed from Xcode's Organizer.
+  PROFILE=""
+  for f in "$HOME"/Library/Developer/Xcode/UserData/Provisioning\ Profiles/*.mobileprovision "$HOME"/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision; do
+    [ -f "$f" ] || continue
+    security cms -D -i "$f" > /tmp/prof.plist 2>/dev/null || continue
+    APPID=$(/usr/libexec/PlistBuddy -c 'Print :Entitlements:application-identifier' /tmp/prof.plist 2>/dev/null || true)
+    DEVS=$(/usr/libexec/PlistBuddy -c 'Print :ProvisionedDevices' /tmp/prof.plist 2>/dev/null || true)
+    case "$APPID" in *.com.siliconhall.museum) [ -z "$DEVS" ] && PROFILE=$(/usr/libexec/PlistBuddy -c 'Print :Name' /tmp/prof.plist);; esac
+  done
+  echo "store profile: ${PROFILE:-NOT FOUND}"
+  [ -z "$PROFILE" ] && { echo "Run 'bash ios.sh' once first so Xcode creates the App Store profile."; exit 1; }
+  python3 - "$PROFILE" <<'PY'
+import sys,re
+name=sys.argv[1]; p='App.xcodeproj/project.pbxproj'; s=open(p).read()
+i=s.rfind('CODE_SIGN_STYLE = Automatic;')
+s=s[:i]+'CODE_SIGN_STYLE = Manual;\n\t\t\t\tPROVISIONING_PROFILE_SPECIFIER = "%s";'%name+s[i+len('CODE_SIGN_STYLE = Automatic;'):]
+open(p,'w').write(s); print('project patched for manual App Store signing')
+PY
+  xcodebuild -workspace App.xcworkspace -scheme App -configuration Release \
+    -destination 'generic/platform=iOS' -archivePath "$OUT/App.xcarchive" \
+    DEVELOPMENT_TEAM="$TEAM" CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="Apple Distribution" archive | tail -15
+  echo "signed archive ok: $OUT/App.xcarchive"
+  open "$OUT/App.xcarchive"
+  echo "=== done (signed archive opened in Xcode Organizer)"
+  exit 0
+fi
+
 # Archive unsigned; signing happens at export, where Xcode creates the App Store profile itself.
 xcodebuild -workspace App.xcworkspace -scheme App -configuration Release \
   -destination 'generic/platform=iOS' -archivePath "$OUT/App.xcarchive" \
