@@ -349,3 +349,31 @@
 .hall-hero { position: relative; overflow: hidden; border-radius: 18px; padding: clamp(28px, 6vw, 72px) clamp(18px, 4vw, 48px); margin-bottom: 18px; isolation: isolate; }
 .hall-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; z-index: -2; }
 .hall-hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(15,21,34,.96) 0%, rgba(15,21,34,.82) 45%, rgba(15,21,34,.35) 100%), linear-gradient(0deg, rgba(15,21,34,.9), transparent 40%); }
+
+/* ===================== dual mode: the top screen is for the display =====================
+   Every rig gives its full height to the CRT; the side gear (drive, tower, system unit) folds away or slims down,
+   and the screen fills the width of the top panel. */
+.exhibit-page[data-layout="dual"] .pedestal { width: min(100%, calc(var(--rig-aspect) * (100cqh - 4px))); padding-top: 0; }
+.exhibit-page[data-layout="dual"] .pedestal.compact .pedestal-top { height: 6px; margin-top: -2px; }
+.exhibit-page[data-layout="dual"] .crt-neck { height: 8px; }
+.exhibit-page[data-layout="dual"] .crt-foot { height: 6px; }
+.exhibit-page[data-layout="dual"] .crt { filter: drop-shadow(0 10px 12px rgba(0,0,0,.5)); }
+/* Commodore 64 / IBM PC console rigs */
+.exhibit-page[data-layout="dual"] .rig-c64 .rig-drive { display: none; }
+.exhibit-page[data-layout="dual"] .rig-c64 .rig-monitor { flex-basis: 100%; max-width: 100%; }
+.exhibit-page.theme-silicon-64[data-layout="dual"] .machine-fit { --rig-aspect: 1.18; }
+.exhibit-page[data-layout="dual"] .rig-pc .pc-monitor { width: 100%; }
+.exhibit-page[data-layout="dual"] .rig-pc .pc-unit { display: none; }
+.exhibit-page.theme-silicon-pc[data-layout="dual"] .machine-fit { --rig-aspect: 1.18; }
+/* Atari 800 console TV */
+.exhibit-page.theme-silicon-800[data-layout="dual"] .machine-fit { --rig-aspect: 1.1; }
+/* Windows 95: tower folds away at every width, not only phones */
+.exhibit-page.theme-silicon-95[data-layout="dual"] .w95-tower { display: none; }
+.exhibit-page.theme-silicon-95[data-layout="dual"] .w95-monitor { flex-basis: 100%; max-width: 100%; }
+.exhibit-page.theme-silicon-95[data-layout="dual"] .w95-mini-tower { display: flex; }
+.exhibit-page.theme-silicon-95[data-layout="dual"] .machine-fit { --rig-aspect: 1.07; }
+/* Macintosh and Amiga: already a single piece, just fill the panel */
+.exhibit-page.theme-classic[data-layout="dual"] .machine-fit { --rig-aspect: 1.1; }
+.exhibit-page.theme-s500[data-layout="dual"] .machine-fit { --rig-aspect: 1.18; }
+/* bottom screen: the keyboard fills the width */
+.exhibit-page[data-layout="dual"] .tabletop-kb { width: min(100%, calc(var(--kb-aspect, 2.55) * (100cqh - 70px))); }
