@@ -377,3 +377,7 @@
 .exhibit-page.theme-s500[data-layout="dual"] .machine-fit { --rig-aspect: 1.18; }
 /* bottom screen: the keyboard fills the width */
 .exhibit-page[data-layout="dual"] .tabletop-kb { width: min(100%, calc(var(--kb-aspect, 2.55) * (100cqh - 70px))); }
+/* dual mode: thinner plastic around the glass so the picture itself is bigger */
+.exhibit-page[data-layout="dual"] .crt-shell { padding: 3% 3.2% 0; }
+.exhibit-page[data-layout="dual"] .crt-bezel { padding: 2.4%; }
+.exhibit-page[data-layout="dual"] .crt-chin, .exhibit-page[data-layout="dual"] .crt-label { transform: scale(.85); transform-origin: left center; }
