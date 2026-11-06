@@ -1,5 +1,6 @@
 import { asset } from "@/lib/asset";
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 import "./hw.css";
 import "./machines.css";
@@ -17,6 +18,15 @@ export const viewport: Viewport = { width: "device-width", initialScale: 1, them
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        {/* Google Tag Manager — fiberxinternet.com */}
+        <Script id="gtm-datalayer" strategy="beforeInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        `}</Script>
+        <Script async src="https://www.googletagmanager.com/gtm.js?id=GTM-P3TLCTD3" strategy="beforeInteractive" />
+      </head>
       <body><StorageMigrate />{children}</body>
     </html>
   );
